@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.claude/worktrees/
+build/
+.env
+*.log
+.DS_Store
