@@ -514,6 +514,80 @@ button { cursor: pointer; }
   .app-name small, .topbar .label-hide { display: none; }
 }
 
+/* ─── Phones ─────────────────────────────────────────────────────────────── */
+/* Below 760px the viewport takes the whole screen; the catalogue and inspector
+   become bottom sheets opened from the bottom bar (MobileNav). */
+.mobile-only, .mobile-nav, .sheet-scrim { display: none; }
+
+@media (max-width: 760px) {
+  .desktop-only { display: none !important; }
+  .mobile-only { display: block; }
+
+  .app {
+    grid-template-columns: 1fr;
+    grid-template-rows: 52px 1fr 56px;
+    grid-template-areas: 'top' 'view' 'nav';
+    height: 100dvh;
+  }
+  .topbar { gap: 6px; padding: 0 8px; }
+  .app-name { display: none; }
+  .project-name { flex: 1; min-width: 0; max-width: none; width: 0; padding: 5px 6px; }
+  .topbar-spacer { display: none; }
+  .topbar .btn-primary { padding: 0 11px; }
+
+  .sidebar, .inspector {
+    position: fixed; left: 0; right: 0; bottom: 56px; z-index: 40;
+    max-height: min(62dvh, calc(100dvh - 120px));
+    height: 62dvh;
+    border: 0; border-top: 1px solid var(--border);
+    border-radius: 16px 16px 0 0;
+    box-shadow: var(--shadow-lg);
+    transform: translateY(calc(100% + 64px));
+    visibility: hidden;
+    transition: transform 0.22s ease-out, visibility 0s 0.22s;
+  }
+  .sheet-catalogue .sidebar, .sheet-inspector .inspector {
+    transform: none; visibility: visible;
+    transition: transform 0.22s ease-out;
+  }
+  .sheet-scrim { display: block; position: fixed; inset: 52px 0 56px; z-index: 39; background: rgba(10, 14, 22, 0.25); }
+
+  .mobile-nav {
+    grid-area: nav; z-index: 41;
+    display: flex; gap: 8px; padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
+    background: var(--panel); border-top: 1px solid var(--border);
+  }
+  .mobile-nav button {
+    flex: 1; border: 0; border-radius: 10px;
+    background: var(--panel-3); color: var(--text);
+    font-weight: 600; font-size: 14px;
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .mobile-nav button.on { background: var(--accent-soft); color: var(--accent); }
+
+  /* Touch-sized targets inside the sheets. */
+  .cat-card .remove { opacity: 1; }
+  .chip { height: 32px; padding: 0 12px; }
+  .input, .select { height: 40px; font-size: 16px; } /* 16px stops iOS zooming on focus */
+  .tab { padding: 10px 12px 12px; }
+
+  .view-bar { bottom: 10px; max-width: calc(100% - 16px); overflow-x: auto; scrollbar-width: none; }
+  .view-bar .label-hide { display: none; }
+  .view-bar button { padding: 0 9px; flex: none; }
+  .kbd-hint, .corner-tools { display: none; }
+  .empty-card { margin: 0 16px; }
+  .toasts { bottom: 70px; width: calc(100% - 32px); }
+
+  .modal-backdrop { padding: 0; place-items: end stretch; }
+  .modal { width: 100%; max-height: 92dvh; border-radius: 16px 16px 0 0; }
+  .modal-head, .modal-body, .modal-foot { padding-left: 16px; padding-right: 16px; }
+  .modal-foot { flex-wrap: wrap; }
+  .export-grid { grid-template-columns: 1fr; gap: 16px; }
+  .view-picks { grid-template-columns: repeat(3, 1fr); }
+  .help-modal { height: 92dvh; }
+  .popover[role='dialog'] { margin: 16px; }
+}
+
 /* ─── Help ───────────────────────────────────────────────────────────────── */
 .help-modal { width: min(880px, 100%); height: min(640px, calc(100vh - 48px)); }
 .help-layout { flex: 1; min-height: 0; display: grid; grid-template-columns: 220px 1fr; }

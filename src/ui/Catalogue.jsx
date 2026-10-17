@@ -15,12 +15,15 @@ function useDragSource(type, w) {
       e.stopPropagation()
       start.current = { x: e.clientX, y: e.clientY }
       useStore.getState().startPlacing(type, w)
+      // On phones, drop the sheet so the drag can continue onto the stand.
+      useStore.getState().setMobilePanel(null)
     },
     onClick: (e) => {
       e.stopPropagation()
       const s = start.current
       if (s && Math.hypot(e.clientX - s.x, e.clientY - s.y) > 5) return
       useStore.getState().addItemAuto(type, w)
+      useStore.getState().setMobilePanel(null)
     },
   }
 }

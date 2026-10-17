@@ -11,7 +11,7 @@ import { openSceneFile, pickSceneFile, saveCurrentDocument } from './state/actio
 import Catalogue from './ui/Catalogue'
 import Inspector from './ui/Inspector'
 import ExportDialog from './ui/ExportDialog'
-import { EmptyState, Toasts, ViewBar } from './ui/Overlays'
+import { EmptyState, MobileNav, Toasts, ViewBar } from './ui/Overlays'
 import HelpDialog from './ui/Help'
 
 function isTyping(e) {
@@ -39,6 +39,7 @@ function useShortcuts() {
 
       if (e.key === 'Escape') {
         if (s.placing) s.endPlacing()
+        else if (s.mobilePanel) s.setMobilePanel(null)
         else if (s.helpOpen) s.setHelpOpen(false)
         else s.select(null)
         return
@@ -142,6 +143,7 @@ export default function App() {
   const exportOpen = useStore((s) => s.exportOpen)
   const placing = useStore((s) => s.placing)
   const replacement = useStore((s) => s.replacement)
+  const mobilePanel = useStore((s) => s.mobilePanel)
   const [dropOver, dropHandlers] = useViewportDrop()
 
   useEffect(() => { document.documentElement.dataset.theme = theme }, [theme])
@@ -150,7 +152,7 @@ export default function App() {
   useAutosave()
 
   return (
-    <div className="app">
+    <div className={`app${mobilePanel ? ` sheet-${mobilePanel}` : ''}`}>
       <TopBar />
       <Catalogue />
       <main className="viewport" {...dropHandlers}>
@@ -160,6 +162,8 @@ export default function App() {
         {dropOver && <div className="drop-overlay"><span>Drop artwork onto an item</span></div>}
       </main>
       <Inspector />
+      {mobilePanel && <div className="sheet-scrim" onClick={() => useStore.getState().setMobilePanel(null)} />}
+      <MobileNav />
       {exportOpen && <ExportDialog />}
       {replacement && <div className="modal-backdrop"><div className="popover" role="dialog" aria-modal="true" aria-labelledby="replace-title" onKeyDown={(e) => {
         if (e.key !== 'Tab') return

@@ -94,6 +94,7 @@ export const HELP_TOPICS = [
           '**Drag** a card onto the floor to place it exactly where you let go. A ghost shows where it will land.',
           '**Click** a card to drop it at the next free spot: walls and lightboxes go along the back, everything else near the front.',
           'Press [[Esc]] while dragging to cancel.',
+          '**On a phone** the catalogue and settings are tucked away: tap **Add items** or **Stand** / **Edit item** at the bottom of the screen to open them. Help and dark mode are in the **File** menu.',
         ],
       },
       {

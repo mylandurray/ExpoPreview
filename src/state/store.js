@@ -127,6 +127,7 @@ export const useStore = create((set, get) => {
     view: { name: 'hero', nonce: 0 },
     exportOpen: false,
     helpOpen: false,
+    mobilePanel: null, // 'catalogue' | 'inspector' — which bottom sheet is open on phones
     helpTopic: 'start',
     toasts: [],
 
@@ -286,6 +287,7 @@ export const useStore = create((set, get) => {
     setMoving: (id) => set({ moving: id }),
     setView: (name) => set((s) => ({ view: { name, nonce: s.view.nonce + 1 } })),
     setExportOpen: (exportOpen) => set({ exportOpen }),
+    setMobilePanel: (mobilePanel) => set({ mobilePanel }),
     setHelpOpen: (helpOpen, topic) => set((s) => ({ helpOpen, helpTopic: topic ?? s.helpTopic })),
 
     toast: (message, tone = 'info') => {

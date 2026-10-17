@@ -44,6 +44,18 @@ function FileMenu() {
           <button className="menu-item" role="menuitem" onClick={run(() => saveSceneFile(doc(), false))}>
             <FileArchive size={16} /> Save without artwork
           </button>
+          <div className="mobile-only">
+            <div className="menu-sep" />
+            <button className="menu-item" role="menuitem" onClick={run(() => useStore.getState().setHelpOpen(true))}>
+              <CircleHelp size={16} /> Help &amp; guide
+            </button>
+            <button className="menu-item" role="menuitem" onClick={run(() => {
+              const s = useStore.getState()
+              s.setPref('theme', s.prefs.theme === 'dark' ? 'light' : 'dark')
+            })}>
+              <Moon size={16} /> Toggle dark mode
+            </button>
+          </div>
         </div>
       )}
     </div>
@@ -63,7 +75,7 @@ export default function TopBar() {
         <span className="app-mark" aria-hidden="true" />
         <span className="app-name">ExpoPreview<small>Stand mockups</small></span>
       </div>
-      <div className="topbar-divider" />
+      <div className="topbar-divider desktop-only" />
       <input
         className="project-name"
         value={name}
@@ -79,14 +91,14 @@ export default function TopBar() {
         <button className="icon-btn" onClick={s.redo} disabled={!canRedo} title={`Redo (${MOD}+Shift+Z)`} aria-label="Redo"><Redo2 size={17} /></button>
       </div>
       <div className="topbar-spacer" />
-      <div className="topbar-group">
+      <div className="topbar-group desktop-only">
         <button className="icon-btn" onClick={() => s.setHelpOpen(true)} title="Help & guide (?)" aria-label="Help and guide"><CircleHelp size={17} /></button>
         <button className="icon-btn" onClick={() => s.setPref('theme', theme === 'dark' ? 'light' : 'dark')} title={theme === 'dark' ? 'Light mode' : 'Dark mode'} aria-label="Toggle theme">
           {theme === 'dark' ? <Sun size={17} /> : <Moon size={17} />}
         </button>
       </div>
-      <button className="btn btn-primary" onClick={() => s.setExportOpen(true)}>
-        <Send size={15} /> Export mockup
+      <button className="btn btn-primary" onClick={() => s.setExportOpen(true)} aria-label="Export mockup">
+        <Send size={15} /> <span className="label-hide">Export mockup</span>
       </button>
     </header>
   )

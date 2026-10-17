@@ -1,4 +1,4 @@
-import { CheckCircle2, AlertCircle, Camera, Focus, MousePointerClick, BookOpen } from 'lucide-react'
+import { CheckCircle2, AlertCircle, Camera, Focus, MousePointerClick, BookOpen, Plus, SlidersHorizontal, X } from 'lucide-react'
 import { useStore } from '../state/store'
 import { VIEWS } from '../scene/views'
 import { quickSnapshot } from '../state/actions'
@@ -16,7 +16,7 @@ export function ViewBar() {
       ))}
       <span className="sep" />
       <button onClick={quickSnapshot} title="Save the current view as an image">
-        <Camera size={14} /> Snapshot
+        <Camera size={14} /> <span className="label-hide">Snapshot</span>
       </button>
     </div>
   )
@@ -31,7 +31,8 @@ export function EmptyState() {
       <div className="float empty-card" style={{ position: 'relative' }}>
         <MousePointerClick size={22} style={{ color: 'var(--accent)', marginBottom: 6 }} />
         <h3>Start building the stand</h3>
-        <p>Drag items from the catalogue onto the floor, or click one to drop it in. Set the stand size on the right.</p>
+        <p className="desktop-only">Drag items from the catalogue onto the floor, or click one to drop it in. Set the stand size on the right.</p>
+        <p className="mobile-only">Tap <strong>Add items</strong> below and pick something, or drag it up onto the floor. Set the stand size under <strong>Stand</strong>.</p>
         <button className="btn btn-sm btn-ghost empty-help" onClick={() => useStore.getState().setHelpOpen(true, 'start')}>
           <BookOpen size={14} /> Read the getting-started guide
         </button>
@@ -52,5 +53,24 @@ export function Toasts() {
         </div>
       ))}
     </div>
+  )
+}
+
+// Phones only (hidden by CSS on wider screens): toggles the catalogue and
+// inspector as bottom sheets so the 3D view gets the whole screen.
+export function MobileNav() {
+  const panel = useStore((s) => s.mobilePanel)
+  const selected = useStore((s) => s.selectedId != null)
+  const setPanel = useStore((s) => s.setMobilePanel)
+  const toggle = (name) => setPanel(panel === name ? null : name)
+  return (
+    <nav className="mobile-nav" aria-label="Panels">
+      <button className={panel === 'catalogue' ? 'on' : ''} onClick={() => toggle('catalogue')} aria-expanded={panel === 'catalogue'}>
+        {panel === 'catalogue' ? <X size={18} /> : <Plus size={18} />} Add items
+      </button>
+      <button className={panel === 'inspector' ? 'on' : ''} onClick={() => toggle('inspector')} aria-expanded={panel === 'inspector'}>
+        {panel === 'inspector' ? <X size={18} /> : <SlidersHorizontal size={18} />} {selected ? 'Edit item' : 'Stand'}
+      </button>
+    </nav>
   )
 }
