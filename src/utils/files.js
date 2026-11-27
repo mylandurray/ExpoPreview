@@ -37,18 +37,25 @@ async function pdfToGraphic(file, maxSize) {
   const pdfjs = await import('pdfjs-dist')
   const { default: workerUrl } = await import('pdfjs-dist/build/pdf.worker.min.mjs?url')
   pdfjs.GlobalWorkerOptions.workerSrc = workerUrl
-  const pdf = await pdfjs.getDocument({ data: await file.arrayBuffer() }).promise
-  const page = await pdf.getPage(1)
-  const base = page.getViewport({ scale: 1 })
-  const viewport = page.getViewport({ scale: maxSize / Math.max(base.width, base.height) })
-  const canvas = document.createElement('canvas')
-  canvas.width = Math.round(viewport.width)
-  canvas.height = Math.round(viewport.height)
-  const ctx = canvas.getContext('2d')
-  ctx.fillStyle = '#ffffff'
-  ctx.fillRect(0, 0, canvas.width, canvas.height)
-  await page.render({ canvasContext: ctx, viewport }).promise
-  return canvas.toDataURL('image/jpeg', 0.9)
+  // Destroying the loading task frees the worker's copy of the document, also
+  // when the file is damaged, password-protected or rendering fails.
+  const task = pdfjs.getDocument({ data: await file.arrayBuffer() })
+  try {
+    const pdf = await task.promise
+    const page = await pdf.getPage(1)
+    const base = page.getViewport({ scale: 1 })
+    const viewport = page.getViewport({ scale: maxSize / Math.max(base.width, base.height) })
+    const canvas = document.createElement('canvas')
+    canvas.width = Math.round(viewport.width)
+    canvas.height = Math.round(viewport.height)
+    const ctx = canvas.getContext('2d')
+    ctx.fillStyle = '#ffffff'
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+    await page.render({ canvasContext: ctx, viewport }).promise
+    return canvas.toDataURL('image/jpeg', 0.9)
+  } finally {
+    await task.destroy()
+  }
 }
 
 export function loadImage(src) {
