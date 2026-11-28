@@ -131,7 +131,7 @@ function useViewportDrop() {
         s.toast(`Artwork added to ${def.label} (${surface.label.toLowerCase()})`, 'success')
       } catch (err) {
         console.error(err)
-        s.toast('Couldn’t read that file.', 'error')
+        s.toast(err.userMessage || 'Couldn’t read that file.', 'error')
       }
     },
   }

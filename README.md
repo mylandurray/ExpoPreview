@@ -58,7 +58,8 @@ src/
 │   └── viewportApi.js      Off-screen rendering for exports; picking items under the cursor
 ├── export/pdf.js           Client mockup PDF (jsPDF, lazy-loaded)
 ├── ui/                     Top bar, catalogue, inspector, export dialog, help guide, overlays
-└── utils/files.js          Image/PDF → texture data URL (downscaled to 3072 px)
+└── utils/files.js          Image/PDF → texture data URL (downscaled to 3072 px); older browsers
+                            get the pdf.js legacy build + pdfPolyfills.js / pdfLegacyWorker.js
 ```
 
 ### Coordinates
