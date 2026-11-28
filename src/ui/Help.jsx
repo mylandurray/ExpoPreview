@@ -150,7 +150,7 @@ export const HELP_TOPICS = [
         points: [
           'Select an item and click **Upload** on a surface in the inspector, or drag a file onto the slot.',
           'Or drop an image **straight onto an item in the 3D view** — it goes on whichever side you dropped it on.',
-          'Accepted files: PNG, JPG, WebP, or a PDF (the first page is used).',
+          'Accepted files: PNG, JPG, WebP, or a PDF (the first page is used). PDF import needs a reasonably recent browser (Safari/iOS 15.4 or newer); on older devices, use PNG or JPG artwork instead.',
           'On double-sided items, **Use front on back** copies the front artwork to the back in one click.',
         ],
       },

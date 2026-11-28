@@ -150,7 +150,7 @@ function GraphicSlot({ itemId, surface, url }) {
       setGraphic(itemId, surface.key, await fileToGraphic(file))
     } catch (err) {
       console.error(err)
-      useStore.getState().toast('Couldn’t read that file.', 'error')
+      useStore.getState().toast(err.userMessage || 'Couldn’t read that file.', 'error')
     } finally {
       setBusy(false)
     }
